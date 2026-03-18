@@ -10,7 +10,7 @@
 
 defined('ABSPATH') || exit;
 
-define('GAMI_VERSION', '1.0.0');
+define('GAMI_VERSION', '1.1.0');
 define('GAMI_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('GAMI_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('GAMI_PREFIX', 'gami_');
@@ -51,6 +51,13 @@ require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-telegram-ads.p
 require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-whatsapp.php';
 require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-bing.php';
 require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-taboola.php';
+require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-pinterest.php';
+require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-tiktok.php';
+require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-linkedin.php';
+require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-youtube.php';
+require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-outbrain.php';
+require_once GAMI_PLUGIN_DIR . 'includes/platforms/class-platform-spotify.php';
+require_once GAMI_PLUGIN_DIR . 'includes/class-stats-importer.php';
 require_once GAMI_PLUGIN_DIR . 'admin/class-admin.php';
 
 // Activation / Deactivation

@@ -445,6 +445,12 @@ class GAMI_Agent_Core {
             'whatsapp'     => 'GAMI_Platform_Whatsapp',
             'bing'         => 'GAMI_Platform_Bing',
             'taboola'      => 'GAMI_Platform_Taboola',
+            'pinterest'    => 'GAMI_Platform_Pinterest',
+            'tiktok'       => 'GAMI_Platform_Tiktok',
+            'linkedin'     => 'GAMI_Platform_Linkedin',
+            'youtube'      => 'GAMI_Platform_Youtube',
+            'outbrain'     => 'GAMI_Platform_Outbrain',
+            'spotify'      => 'GAMI_Platform_Spotify',
         ];
         if (!isset($map[$key])) return null;
         $class = $map[$key];

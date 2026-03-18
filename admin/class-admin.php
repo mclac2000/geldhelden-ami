@@ -12,6 +12,9 @@ class GAMI_Admin {
         add_action('wp_ajax_gami_run_loop', [self::class, 'ajax_run_loop']);
         add_action('wp_ajax_gami_get_learnings', [self::class, 'ajax_get_learnings']);
         add_action('wp_ajax_gami_generate_ads', [self::class, 'ajax_generate_ads']);
+        add_action('wp_ajax_gami_import_stats', [self::class, 'ajax_import_stats']);
+        add_action('wp_ajax_gami_demo_data', [self::class, 'ajax_demo_data']);
+        add_action('wp_ajax_gami_generate_script', [self::class, 'ajax_generate_script']);
     }
 
     public static function add_menu(): void {
@@ -149,6 +152,18 @@ class GAMI_Admin {
             'gami_taboola_client_id', 'gami_taboola_client_secret', 'gami_taboola_account_id', 'gami_taboola_active',
             // Telegram Ads
             'gami_telegram_ads_api_token', 'gami_telegram_ads_active',
+            // Pinterest
+            'gami_pinterest_ad_account_id', 'gami_pinterest_access_token', 'gami_pinterest_board_id', 'gami_pinterest_active',
+            // TikTok
+            'gami_tiktok_advertiser_id', 'gami_tiktok_access_token', 'gami_tiktok_active',
+            // LinkedIn
+            'gami_linkedin_account_id', 'gami_linkedin_access_token', 'gami_linkedin_active',
+            // YouTube
+            'gami_youtube_channel_id', 'gami_youtube_active',
+            // Outbrain
+            'gami_outbrain_marketer_id', 'gami_outbrain_username', 'gami_outbrain_password', 'gami_outbrain_active',
+            // Spotify
+            'gami_spotify_client_id', 'gami_spotify_client_secret', 'gami_spotify_active',
         ];
 
         foreach ($settings as $key => $value) {
@@ -182,6 +197,72 @@ class GAMI_Admin {
         $t = GAMI_Database::get_table('learnings');
         $learnings = $wpdb->get_results("SELECT * FROM $t ORDER BY confidence DESC LIMIT 50");
         wp_send_json_success($learnings);
+    }
+
+    // AJAX: Demo-Daten generieren (für Tests ohne echte API-Keys)
+    public static function ajax_demo_data(): void {
+        check_ajax_referer('gami_nonce', 'nonce');
+        if (!current_user_can('manage_options')) wp_send_json_error('Unauthorized');
+
+        $imported = GAMI_Stats_Importer::generate_quick_demo();
+        wp_send_json_success("✅ $imported Demo-Datensätze importiert. Learning-Analyse kann jetzt starten.");
+    }
+
+    // AJAX: Einzelnen Stats-Datensatz importieren
+    public static function ajax_import_stats(): void {
+        check_ajax_referer('gami_nonce', 'nonce');
+        if (!current_user_can('manage_options')) wp_send_json_error('Unauthorized');
+
+        $data = [
+            'ad_id'       => intval($_POST['ad_id'] ?? 0),
+            'stat_date'   => sanitize_text_field($_POST['stat_date'] ?? ''),
+            'impressions' => intval($_POST['impressions'] ?? 0),
+            'clicks'      => intval($_POST['clicks'] ?? 0),
+            'spend'       => floatval($_POST['spend'] ?? 0),
+            'conversions' => intval($_POST['conversions'] ?? 0),
+            'revenue'     => floatval($_POST['revenue'] ?? 0),
+        ];
+
+        $success = GAMI_Stats_Importer::import_single($data);
+        if ($success) {
+            wp_send_json_success('Daten importiert.');
+        } else {
+            wp_send_json_error('Import fehlgeschlagen. Ad-ID prüfen.');
+        }
+    }
+
+    // AJAX: Content-Skripte generieren (YouTube, TikTok, Spotify, WhatsApp)
+    public static function ajax_generate_script(): void {
+        check_ajax_referer('gami_nonce', 'nonce');
+        if (!current_user_can('manage_options')) wp_send_json_error('Unauthorized');
+
+        $product_id = intval($_POST['product_id'] ?? 0);
+        $type       = sanitize_text_field($_POST['type'] ?? 'whatsapp_voice');
+        $duration   = intval($_POST['duration'] ?? 30);
+
+        if (!$product_id) wp_send_json_error('Produkt-ID fehlt');
+
+        switch ($type) {
+            case 'youtube_preroll':
+                $script = GAMI_Platform_Youtube::generate_preroll_script($product_id, 'skippable');
+                break;
+            case 'tiktok_video':
+                $script = GAMI_Platform_Tiktok::generate_video_script($product_id, $duration);
+                break;
+            case 'spotify_audio':
+                $script = GAMI_Platform_Spotify::generate_audio_script($product_id, $duration);
+                break;
+            case 'whatsapp_voice':
+            default:
+                $script = GAMI_Ad_Generator::generate_whatsapp_voice_script($product_id);
+                break;
+        }
+
+        if ($script) {
+            wp_send_json_success(['script' => $script]);
+        } else {
+            wp_send_json_error('Skript konnte nicht generiert werden.');
+        }
     }
 
     // AJAX: Ads manuell generieren

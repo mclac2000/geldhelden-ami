@@ -160,6 +160,28 @@
             });
         });
 
+        // Demo-Daten generieren
+        $('#gami-demo-data').on('click', function() {
+            var btn = $(this).prop('disabled', true).text('Generiere...');
+            $('#gami-test-result').text('Erstelle realistische Test-Daten...');
+            $.post(GAMI.ajax_url, {action: 'gami_demo_data', nonce: GAMI.nonce}, function(res) {
+                btn.prop('disabled', false).text('🎲 Demo-Daten generieren');
+                $('#gami-test-result').css('color', res.success ? '#00c9a7' : '#ff4d4f')
+                    .text(res.success ? res.data : '❌ ' + res.data);
+            });
+        });
+
+        // Learning + Daily-Loop aus Settings
+        $('#gami-run-learn-settings, #gami-run-daily-settings').on('click', function() {
+            var loop = $(this).is('#gami-run-learn-settings') ? 'learn' : 'daily';
+            var btn = $(this).prop('disabled', true);
+            $.post(GAMI.ajax_url, {action: 'gami_run_loop', nonce: GAMI.nonce, loop: loop}, function(res) {
+                btn.prop('disabled', false);
+                $('#gami-test-result').css('color', res.success ? '#00c9a7' : '#ff4d4f')
+                    .text(res.success ? '✅ ' + res.data : '❌ ' + res.data);
+            });
+        });
+
         // Settings speichern
         $('#gami-save-settings').on('click', function() {
             var settings = {};

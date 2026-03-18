@@ -123,6 +123,102 @@
         </div>
     </div>
 
+    <!-- Pinterest -->
+    <div class="gami-card">
+        <div class="gami-card-header">📌 PINTEREST ADS</div>
+        <div class="gami-card-body">
+            <div class="gami-toggle-row">
+                <label>Aktiv</label>
+                <input type="checkbox" name="gami_pinterest_active" <?= get_option('gami_pinterest_active') ? 'checked' : '' ?>>
+            </div>
+            <div class="gami-field"><label>Ad Account ID</label><input type="text" name="gami_pinterest_ad_account_id" value="<?= esc_attr(get_option('gami_pinterest_ad_account_id')) ?>"></div>
+            <div class="gami-field"><label>Access Token</label><input type="password" name="gami_pinterest_access_token" value="<?= esc_attr(get_option('gami_pinterest_access_token')) ?>"></div>
+            <div class="gami-field"><label>Board ID (für Pins)</label><input type="text" name="gami_pinterest_board_id" value="<?= esc_attr(get_option('gami_pinterest_board_id')) ?>"></div>
+        </div>
+    </div>
+
+    <!-- TikTok -->
+    <div class="gami-card">
+        <div class="gami-card-header">🎵 TIKTOK FOR BUSINESS</div>
+        <div class="gami-card-body">
+            <div class="gami-toggle-row">
+                <label>Aktiv</label>
+                <input type="checkbox" name="gami_tiktok_active" <?= get_option('gami_tiktok_active') ? 'checked' : '' ?>>
+            </div>
+            <div class="gami-field"><label>Advertiser ID</label><input type="text" name="gami_tiktok_advertiser_id" value="<?= esc_attr(get_option('gami_tiktok_advertiser_id')) ?>"></div>
+            <div class="gami-field"><label>Access Token</label><input type="password" name="gami_tiktok_access_token" value="<?= esc_attr(get_option('gami_tiktok_access_token')) ?>"></div>
+        </div>
+    </div>
+
+    <!-- LinkedIn -->
+    <div class="gami-card">
+        <div class="gami-card-header">💼 LINKEDIN ADS (B2B)</div>
+        <div class="gami-card-body">
+            <div class="gami-toggle-row">
+                <label>Aktiv</label>
+                <input type="checkbox" name="gami_linkedin_active" <?= get_option('gami_linkedin_active') ? 'checked' : '' ?>>
+            </div>
+            <div class="gami-info">Empfohlen für: Holding, Steueroptimierung, Freiheits-Business (B2B-Produkte)</div>
+            <div class="gami-field"><label>Account ID</label><input type="text" name="gami_linkedin_account_id" value="<?= esc_attr(get_option('gami_linkedin_account_id')) ?>"></div>
+            <div class="gami-field"><label>Access Token</label><input type="password" name="gami_linkedin_access_token" value="<?= esc_attr(get_option('gami_linkedin_access_token')) ?>"></div>
+        </div>
+    </div>
+
+    <!-- YouTube -->
+    <div class="gami-card">
+        <div class="gami-card-header">▶️ YOUTUBE ADS</div>
+        <div class="gami-card-body">
+            <div class="gami-toggle-row">
+                <label>Aktiv</label>
+                <input type="checkbox" name="gami_youtube_active" <?= get_option('gami_youtube_active') ? 'checked' : '' ?>>
+            </div>
+            <div class="gami-info">Nutzt Google Ads API-Credentials. Kein separater Key nötig.</div>
+            <div class="gami-field"><label>YouTube Channel ID (für Placement-Targeting)</label><input type="text" name="gami_youtube_channel_id" value="<?= esc_attr(get_option('gami_youtube_channel_id')) ?>"></div>
+        </div>
+    </div>
+
+    <!-- Outbrain -->
+    <div class="gami-card">
+        <div class="gami-card-header">🔗 OUTBRAIN NATIVE</div>
+        <div class="gami-card-body">
+            <div class="gami-toggle-row">
+                <label>Aktiv</label>
+                <input type="checkbox" name="gami_outbrain_active" <?= get_option('gami_outbrain_active') ? 'checked' : '' ?>>
+            </div>
+            <div class="gami-field"><label>Marketer ID</label><input type="text" name="gami_outbrain_marketer_id" value="<?= esc_attr(get_option('gami_outbrain_marketer_id')) ?>"></div>
+            <div class="gami-field"><label>Username</label><input type="text" name="gami_outbrain_username" value="<?= esc_attr(get_option('gami_outbrain_username')) ?>"></div>
+            <div class="gami-field"><label>Passwort</label><input type="password" name="gami_outbrain_password" value="<?= esc_attr(get_option('gami_outbrain_password')) ?>"></div>
+        </div>
+    </div>
+
+    <!-- Spotify -->
+    <div class="gami-card">
+        <div class="gami-card-header">🎙 SPOTIFY ADS STUDIO</div>
+        <div class="gami-card-body">
+            <div class="gami-toggle-row">
+                <label>Aktiv</label>
+                <input type="checkbox" name="gami_spotify_active" <?= get_option('gami_spotify_active') ? 'checked' : '' ?>>
+            </div>
+            <div class="gami-info">Für Podcast-Hörer — höchste Qualitätszielgruppe. Benötigt Audio-Produktion.</div>
+            <div class="gami-field"><label>Client ID</label><input type="text" name="gami_spotify_client_id" value="<?= esc_attr(get_option('gami_spotify_client_id')) ?>"></div>
+            <div class="gami-field"><label>Client Secret</label><input type="password" name="gami_spotify_client_secret" value="<?= esc_attr(get_option('gami_spotify_client_secret')) ?>"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Test-Bereich -->
+<div class="gami-card" style="margin-bottom:20px">
+    <div class="gami-card-header">🧪 SYSTEM TESTEN (ohne echte API-Keys)</div>
+    <div class="gami-card-body">
+        <p style="color:var(--gami-text-dim);font-size:13px">Generiert realistische Demo-Daten (10 Tage Performance) für alle vorhandenen Ads. Damit kann Learning Engine, A/B-Testing und Agent-Loop getestet werden.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button id="gami-demo-data" class="gami-btn" style="background:var(--gami-accent2)">🎲 Demo-Daten generieren</button>
+            <button id="gami-run-learn-settings" class="gami-btn" style="background:var(--gami-bg3);border:1px solid var(--gami-border)">🧠 Learning-Analyse starten</button>
+            <button id="gami-run-daily-settings" class="gami-btn" style="background:var(--gami-bg3);border:1px solid var(--gami-border)">⚙️ Daily-Loop ausführen</button>
+        </div>
+        <div id="gami-test-result" style="margin-top:12px;font-size:13px"></div>
+    </div>
 </div>
 
 <div class="gami-settings-save">

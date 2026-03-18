@@ -158,6 +158,51 @@ class GAMI_Platform_Google extends GAMI_Platform_Base {
     }
 
     /**
+     * Für YouTube-Platform: Query-basierter Stats-Fetch
+     */
+    public function fetch_campaign_stats_with_query(string $query): array {
+        $result = $this->google_request('POST', 'googleAds:searchStream', ['query' => $query]);
+        if (!$result) return [];
+
+        $stats = [];
+        foreach ($result[0]['results'] ?? [] as $row) {
+            $stats[] = [
+                'platform'    => 'google',
+                'impressions' => intval($row['metrics']['impressions'] ?? 0),
+                'clicks'      => intval($row['metrics']['clicks'] ?? 0),
+                'ctr'         => round(floatval($row['metrics']['ctr'] ?? 0) * 100, 4),
+                'spend'       => ($row['metrics']['costMicros'] ?? 0) / 1000000,
+                'conversions' => floatval($row['metrics']['conversions'] ?? 0),
+                'cpl'         => ($row['metrics']['costPerConversion'] ?? 0) / 1000000,
+                'campaign_platform_id' => $row['campaign']['id'] ?? '',
+            ];
+        }
+        return $stats;
+    }
+
+    /**
+     * YouTube Video Ad erstellen
+     */
+    public function create_video_ad(array $ad_data): ?string {
+        $result = $this->google_request('POST', 'ads:mutate', [
+            'operations' => [[
+                'create' => [
+                    'videoAd' => [
+                        'video'           => ['id' => $ad_data['video_id'] ?? ''],
+                        'inStreamAd'      => [
+                            'actionButtonLabel' => 'Mehr erfahren',
+                            'actionHeadline'    => substr($ad_data['headline'] ?? 'Geldhelden', 0, 15),
+                        ],
+                    ],
+                    'finalUrls' => [$ad_data['final_url'] ?? get_site_url()],
+                    'displayUrl' => $ad_data['display_url'] ?? 'geldhelden.org',
+                ]
+            ]],
+        ]);
+        return $result['results'][0]['resourceName'] ?? null;
+    }
+
+    /**
      * Keyword-Vorschläge via Google Keyword Planner
      */
     public function get_keyword_suggestions(array $seed_keywords): array {
