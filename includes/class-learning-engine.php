@@ -366,7 +366,7 @@ PROMPT;
 
         if (empty($learnings)) return 'Keine neuen Learnings diese Woche.';
 
-        $prompt = "Fasse diese Cross-Platform-Marketing-Learnings in einer prägnanten deutschen Zusammenfassung für Marco zusammen. Max 500 Wörter, bulletpoints, mit konkreten Handlungsempfehlungen:\n\n";
+        $prompt = "Fasse diese Cross-Platform-Marketing-Learnings in einer prägnanten deutschen Zusammenfassung für Marco zusammen. Max 500 Wörter, bulletpoints, mit konkreten Handlungsempfehlungen.\n\nWICHTIG: Verwende NUR Telegram HTML-Formatierung: <b>fett</b> statt **fett**, <i>kursiv</i> statt *kursiv*. Kein Markdown.\n\n";
         foreach ($learnings as $l) {
             $prompt .= "- [{$l->source_platform} → {$l->target_platforms}] {$l->finding} (Lift: +{$l->lift_percent}%, Konfidenz: {$l->confidence}%)\n";
         }

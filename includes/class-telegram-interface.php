@@ -321,7 +321,8 @@ class GAMI_Telegram_Interface {
     private static function cmd_freetext(string $text): void {
         $prompt = "Du bist der Geldhelden AMI Agent. Marco schreibt dir:\n\n\"$text\"\n\n"
             . "Was meint er damit und was sollst du tun? "
-            . "Antworte auf Deutsch, max 200 Wörter, und beschreibe was du jetzt tust/empfiehlst.";
+            . "Antworte auf Deutsch, max 200 Wörter, und beschreibe was du jetzt tust/empfiehlst. "
+            . "Wichtig: Verwende NUR Telegram HTML-Formatierung: <b>fett</b> statt **fett**, <i>kursiv</i> statt *kursiv*. Kein Markdown.";
         $response = GAMI_Claude_Client::ask($prompt, GAMI_Claude_Client::get_agent_system_prompt(), 1024);
         self::send_to_marco($response ?? "Konnte Anfrage nicht verarbeiten.");
     }
